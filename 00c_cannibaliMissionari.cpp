@@ -8,13 +8,17 @@
 
 	/* PROTOTIPI DELLE FUNZIONI */
 
-	void inizializza (void);
-	void messaggioFinale (void);
-	void disegnaConfigurazione(void);
-	void interazioneUtente (void);
-	void eseguiAzione (void);
-    void muoviMissionario (void);
-    void muoviCannibale
+	void inizializza ();
+	void messaggioIniziale ();
+	void messaggioFinale ();
+	void disegnaConfigurazione();
+	void interazioneUtente ();
+	void eseguiAzione ();
+    void muoviMissionario ();
+    void muoviCannibale ();
+    void muoviBarca();
+    void controlloVittoria ();
+    void controlloSconfitta ();
 
 	/* VARIABILI GLOBALI E TIPI DI DATO */
 
@@ -32,21 +36,36 @@
 	unsigned char MissionariBarca, CannibaliBarca;
 	// assume due valori : "d" e "s"
 
+    // VARIABILI CHE CONTROLLANO LA FINE DEL GIOCO
+
 	bool gioco_terminato;
 	// assume due valori : true false
 
 	bool vittoria;
 	//true solo se l'utente ha vinto il gioco
 
+    bool sconfitta;
+    //true solo se l'utente perde il gioco
+
 	char elemento;
-	/* m --> per missionario
-	   c --> per
+	/* 'm' --> per missionario
+	   'c' --> per cannibale
+	   'b'--> per barca
+    */
 
 	char partenza;
+	/* 's' --> sponda sinistra
+       'd' --> sponda destra
+       'b' --> barca
+    */
 
 	char arrivo;
+	/* 's' --> sponda sinistra
+       'd' --> sponda destra
+       'b' --> barca
+    */
 
-	//###################################
+	//FUNZIONE PRINCIPALE
 
 int main()
 {
@@ -55,18 +74,22 @@ int main()
 
 	while(!gioco_terminato){
 		disegnaConfigurazione();
-		interazioneUtente();
-		eseguiAzione();
+        interazioneUtente();
+        eseguiAzione();
+        controllaVittoria();
+        controllaSconfitta();
+        gioco_terminato = vittoria || sconfitta;
 	}
 
 	messaggioFinale ();
+	disegnaConfigurazione ();  //disegna la situazione finale
 
 	system("PAUSE");
 	return 0;
 
 }
 
-void controllaVittoria(void){
+void controlloVittoria(void){
 
 	if ((missionari_sx < cannibali_sx && missionari_sx > 0)||
           (missionari_dx < cannibali_dx && missionari_dx > 0) )
@@ -75,6 +98,13 @@ void controllaVittoria(void){
          vittoria = true;
     if (vittoria || sconfitta)
          gioco_terminato = true;
+}
+
+void controlloSconfitta (void){
+    sconfitta = (
+                (missionari_sx < cannibali_sx && missionari_sx > 0) ||
+                (missionari_dx < cannibali_dx && missionari_dx > 0)
+                );
 }
 
 void inizializza (void)
@@ -90,18 +120,34 @@ void inizializza (void)
 	lato_barca = 'd';
 	CannibaliBarca = 0;
 	MissionariBarca = 0;
-	vittoria = false;
-	sconfitta = false;
+	// Funzioni che assegnano dei valori alle variabili sconfitta, vittoria
+	controllaVittoria();
+    controllaSconfitta();
+    gioco_terminato = vittoria || sconfitta;
 }
 
+// Questa funzione stampa all'utente il messaggio finale in caso di vittoria o di sconfitta
 void messaggioFinale(void){
     system("CLS");
     if (gioco_terminato && sconfitta)
-        cout << "Hai perso!" << endl;
+        cout << "-------------------------------Hai perso!" << endl;
     if (gioco_terminato && vittoria)
-        cout << "Hai vinto!" << endl;
+        cout << "-------------------------------Hai vinto!" << endl;
 }
 
+// Questa funzione stampa all'utente le regole del gioco
+void messaggioiniziale(void){
+cout << "********************GIOCO DEI CANNIBALI E MISSIONARI*******************"<<endl;
+cout << "SCOPO DEL GIOCO:" <<endl;
+cout << "FAR ARRIVARE TUTTI I MISSIONARI NELLA SPONDA SINISTRA DEL FIUME" <<endl;
+cout << "REGOLE DEL GIOCO:" <<endl;
+cout << "-Per far muovere la barca deve esserci almeno un personaggio" <<endl,
+cout << "-Se nella sponda ci sono più cannibali che missionari hai perso" <<endl;
+cout << "-Per far passare un personaggio da una sponda all'altra devi utilizzare la barca" <<endl;
+ system("pause");
+}
+
+// Questa funzione permette di visualizzare a video i caratteri 'm' e 'c' in base alla posizione dei cannibali e missionari
 void disegnaConfigurazione (void)
 {
 cout<<"                                                                     M M M C C C"<<endl;
@@ -122,10 +168,9 @@ char posto_sx='_', posto_dx='_';
 	cout << "puoi mettere nella barca solo due personaggi";
 	}
 	}
-	};
+	}}
 
-
-
+void interazioneUtente (void);{
     if (lato_barca == 'd')
     {
 cout<<"                                                                     M M M C C C"<<endl;
@@ -175,10 +220,6 @@ cout<< "------------|("<<posto_sx<<"|"<<posto_dx<<")________________________|---
 	bool controllo3= false;
 void interazioneUtente (void)
 {
-
-	cout<< "------------------------GIOCO CANNIBALI E MISSIONARI------------------------";
-
-
 do
 {
 	cout << "che personaggio vuoi muovere ?" << endl;
