@@ -20,28 +20,21 @@ int main (){
     cout << "Inserisci il terzo valore" <<endl;
     cin >> terzoValore;
 
-    switch (MAX){
-        case 1
-    }
-    if (primoValore>secondoValore){
-        MAX=primoValore;
-        MIN=secondoValore;
-            }else{
-            if (primoValore>terzoValore){
-                    MAX=primoValore;
-                    MIN=secondoValore
-                    }else{
-                    MAX=terzoValore;
+    MAX=max(primoValore && secondoValore && terzoValore);
+    MIN=min (primoValore && secondoValore && terzoValore);
+    DIFF=MAX-MIN
 
-                    }
-    }else{
-            MAX=secondoValore;
-            if(secondoValore>terzoValore){
-                MAX=secondoValore;
-            }else{
-                MAX=terzoValore;
-            }
-    }
     cout << "IL VALORE MASSIMO E'  "<<MAX<< endl;
+    cout << "IL VALORE MINIMO E' "<<MIN<< endl;
+    cout << "LA DIFFERENZA FRA IL VALORE MAGGIORE E QUELLO MINORE E' "<<DIFF<<endl;
     return 0;
 }
+
+switch (MAX){
+        case primoValore>secondoValore>terzoValore:
+        case terzoValore>secondoValore>primoValore:
+        case primoValore>terzoValore>secondoValore:
+        case terzoValore>primoValore>secondoValore:
+        case secondoValore>terzoValore>primoValore:
+        case secondoValore>primoValore>terzoValore:
+    }
