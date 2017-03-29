@@ -14,14 +14,16 @@ int main(){
 
 void selection_sort(int v[], int dim)
 {
-    int comodo;
+    int comodo,ind_min;
     for(int i = 0; i < dim-1; i++){
+        ind-min=i;
         for (int j = i+1; j < dim; j++){
-            if (v[i] > v[j]){
-                comodo = v[i];
-                v[i] = v[j];
-                v[j] = comodo;
+            if (v[ind_min] > v[j]){
+               ind_min=j;
             }
+            v[i]=comodo;
+            v[i]=v[ind_min];
+            v[ind_min]=comodo;
         }
     }
 }//end selection sort
