@@ -1,0 +1,4 @@
+SELECT first_name, last_name
+FROM employees, customers, orders
+INNER JOIN customers
+ON orders.customer_id = customer.id AND customer.id = 15
